@@ -6,7 +6,7 @@
 //  Copyright (c) 2005 Toxic Software. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
+#import <Foundation/Foundation.h>
 
 @interface NSCharacterSet (NSCharacterSet_Extensions)
 

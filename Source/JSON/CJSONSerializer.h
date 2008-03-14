@@ -6,7 +6,7 @@
 //  Copyright 2005 Toxic Software. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 @interface CJSONSerializer : NSObject {
 }
