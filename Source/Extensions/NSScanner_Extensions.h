@@ -14,7 +14,6 @@
 
 - (unichar)currentCharacter;
 - (unichar)scanCharacter;
-- (void)skipWhitespace;
 - (BOOL)scanCharacter:(unichar)inCharacter;
 - (void)backtrack:(unsigned)inCount;
 

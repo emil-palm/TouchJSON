@@ -334,10 +334,11 @@ else
 
 - (void)skipJSONWhitespace
 {
-[self skipWhitespace];
+NSCharacterSet *theWhitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+[self scanCharactersFromSet:theWhitespaceCharacterSet intoString:NULL];
 [self scanCStyleComment:NULL];
 [self scanCPlusPlusStyleComment:NULL];
-[self skipWhitespace];
+[self scanCharactersFromSet:theWhitespaceCharacterSet intoString:NULL];
 }
 
 @end

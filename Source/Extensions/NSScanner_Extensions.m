@@ -42,12 +42,6 @@ else
 	return(NO);
 }
 
-- (void)skipWhitespace
-{
-[self scanCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] intoString:NULL];
-
-}
-
 - (void)backtrack:(unsigned)inCount
 {
 unsigned theScanLocation = [self scanLocation];
