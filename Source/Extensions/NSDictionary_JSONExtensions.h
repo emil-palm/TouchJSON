@@ -6,7 +6,7 @@
 //  Copyright 2008 toxicsoftware.com. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 @interface NSDictionary (NSDictionary_JSONExtensions)
 
