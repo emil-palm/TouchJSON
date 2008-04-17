@@ -6,17 +6,21 @@
 //  Copyright 2005 Toxic Software. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "CDataScanner.h"
 
+@interface CJSONScanner : CDataScanner {
+	BOOL scanComments;
+	NSCharacterSet *notQuoteCharacters;
+	NSCharacterSet *whitespaceCharacterSet;
+}
 
-@interface NSScanner (NSScanner_JSONExtensions)
+@property (readwrite, assign) BOOL scanComments;
 
-- (BOOL)scanJSONObject:(id *)outObject;
-- (BOOL)scanJSONDictionary:(NSDictionary **)outDictionary;
-- (BOOL)scanJSONArray:(NSArray **)outArray;
-- (BOOL)scanJSONTuple:(NSArray **)outArray;
-- (BOOL)scanJSONStringConstant:(NSString **)outStringConstant;
-- (BOOL)scanJSONNumberConstant:(NSNumber **)outNumberConstant;
+- (BOOL)scanJSONObject:(id *)outObject error:(NSError **)outError;
+- (BOOL)scanJSONDictionary:(NSDictionary **)outDictionary error:(NSError **)outError;
+- (BOOL)scanJSONArray:(NSArray **)outArray error:(NSError **)outError;
+- (BOOL)scanJSONStringConstant:(NSString **)outStringConstant error:(NSError **)outError;
+- (BOOL)scanJSONNumberConstant:(NSNumber **)outNumberConstant error:(NSError **)outError;
 - (void)skipJSONWhitespace;
 
 @end

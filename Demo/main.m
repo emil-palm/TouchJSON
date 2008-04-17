@@ -6,17 +6,19 @@ int main(int argc, char **argv)
 {
 NSAutoreleasePool *theAutoreleasePool = [[NSAutoreleasePool alloc] init];
 //
-id theObject = NULL;
 
 NSString *theSource = NULL;
-theSource = @"{\"r\":[{\"name\":\"KEXP\",\"desc\":\"90.3 - Where The Music Matters\",\"icon\":\"\\/img\\/channels\\/radio_stream.png\",\"audiostream\":\"http:\\/\\/kexp-mp3-1.cac.washington.edu:8000\\/\",\"type\":\"radio\",\"stream\":\"fb8155000526e0abb5f8d1e02c54cb83094cffae\",\"relay\":\"r2b\"}]}";
 //theSource = @"[{\"a\":\"b\"}]";
+theSource = @"{\"r\":[{\"name\":\"KEXP\",\"desc\":\"90.3 - Where The Music Matters\",\"icon\":\"\\/img\\/channels\\/radio_stream.png\",\"audiostream\":\"http:\\/\\/kexp-mp3-1.cac.washington.edu:8000\\/\",\"type\":\"radio\",\"stream\":\"fb8155000526e0abb5f8d1e02c54cb83094cffae\",\"relay\":\"r2b\"}]}";
+NSData *theData = [theSource dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+//NSData *theData = [NSData dataWithContentsOfFile:@"/Users/schwa/Desktop/d.json"];
 
-NSScanner *theScanner = [NSScanner scannerWithString:theSource];
+CJSONScanner *theScanner = [CJSONScanner scannerWithData:theData];
 
-BOOL theResult = [theScanner scanJSONObject:&theObject];
+id theObject = NULL;
+BOOL theResult = [theScanner scanJSONObject:&theObject error:NULL];
 
-NSLog(@"%@", theObject);
+NSLog(@"Result: %d", [theObject count]);
 
 
 //

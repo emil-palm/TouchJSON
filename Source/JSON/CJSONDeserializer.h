@@ -14,6 +14,6 @@
 
 + (id)deserializer;
 
-- (id)deserialize:(NSString *)inString;
+- (id)deserialize:(NSData *)inData error:(NSError **)outError;
 
 @end

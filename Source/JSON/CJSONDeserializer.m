@@ -9,6 +9,7 @@
 #import "CJSONDeserializer.h"
 
 #import "CJSONScanner.h"
+#import "CDataScanner.h"
 
 @implementation CJSONDeserializer
 
@@ -17,11 +18,11 @@
 return([[[self alloc] init] autorelease]);
 }
 
-- (id)deserialize:(NSString *)inString
+- (id)deserialize:(NSData *)inData error:(NSError **)outError
 {
-NSScanner *theScanner = [NSScanner scannerWithString:inString];
+CJSONScanner *theScanner = [CJSONScanner scannerWithData:inData];
 id theObject = NULL;
-if ([theScanner scanJSONObject:&theObject] == YES)
+if ([theScanner scanJSONObject:&theObject error:outError] == YES)
 	return(theObject);
 else
 	return(NULL);
