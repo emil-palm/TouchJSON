@@ -1,7 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <Carbon/Carbon.h>
 
-extern NSDictionary *Test(NSData *theData);
+extern NSDictionary *TouchJSONTest(NSData *theData);
+extern NSDictionary *BSJSONTest(NSData *theData);
+extern NSDictionary *SbrautasetJSONTest(NSData *theData);
+
+typedef NSDictionary *(*testfuncptr)(NSData *theData);
 
 int main (int argc, const char *argv[])
 {
@@ -10,31 +14,34 @@ NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
 NSString *theFilename = [NSString stringWithUTF8String:argv[1]];
 NSData *theContentData = [NSData dataWithContentsOfFile:theFilename];
 
-//time_t  t0, t1;
-//clock_t c0, c1;
+testfuncptr theTestPtr = NULL;
+if (strcmp(argv[2], "TouchJSON") == 0)
+	theTestPtr = TouchJSONTest;
+else if (strcmp(argv[2], "BSJSON") == 0)
+	theTestPtr = BSJSONTest;
+else if (strcmp(argv[2], "SbrautasetJSON") == 0)
+	theTestPtr = SbrautasetJSONTest;
+
+int theCount = 1;
+
 UInt64 M0, M1;
 
-//t0 = time(NULL);
-//c0 = clock();
 Microseconds((UnsignedWide *)&M0);
 
-NSAutoreleasePool *theTestPool = [[NSAutoreleasePool alloc] init];
+for (int N = 0; N != theCount; ++N)
+	{
+	NSAutoreleasePool *theTestPool = [[NSAutoreleasePool alloc] init];
 
-NSDictionary *theOutput = Test(theContentData);
-[theOutput retain];
+	NSDictionary *theOutput = (*theTestPtr)(theContentData);
+//	[theOutput retain];
 
-[theTestPool drain];
+	[theTestPool drain];
 
-//t1 = time(NULL);
-//c1 = clock();
+//	[theOutput autorelease];
+	}
+
 Microseconds((UnsignedWide *)&M1);
-
-//printf ("Wall clock time: %ld\n", (long) (t1 - t0));
-//printf ("CPU time:        %f\n", (float) (c1 - c0)/CLOCKS_PER_SEC);
-printf ("Microseconds: %ld\n", (M1 - M0));
-
-
-[theOutput autorelease];
+NSLog(@"Microseconds: %g\n", ((double)(M1 - M0) / (double)theCount) / 1000000.0);
 
 [thePool drain];
 return 0;

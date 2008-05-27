@@ -74,7 +74,7 @@ if (data != inData)
 	{
 	if (data)
 		{
-		[data autorelease];
+		[data release];
 		data = NULL;
 		}
 	
