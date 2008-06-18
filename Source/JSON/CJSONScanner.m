@@ -166,6 +166,11 @@ NSMutableDictionary *theDictionary = [NSMutableDictionary dictionary];
 
 while ([self scanCharacter:'}'] == NO)
 	{
+	[self skipJSONWhitespace];
+	
+	if ([self scanCharacter:'}'] == YES)
+		break;
+
 	NSString *theKey = NULL;
 	if ([self scanJSONStringConstant:&theKey error:outError] == NO)
 		{
@@ -224,16 +229,6 @@ while ([self scanCharacter:'}'] == NO)
 		}
 	}
 
-if ([self scanCharacter:'}'] == NO)
-	{
-	[self setScanLocation:theScanLocation];
-	if (outError)
-		{
-		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-6 userInfo:NULL];
-		}
-	return(NO);
-	}
-	
 if (outDictionary != NULL)
 	*outDictionary = theDictionary;
 return(YES);

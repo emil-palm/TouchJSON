@@ -240,7 +240,52 @@ STAssertTrue(theResult, @"Scan return failure.");
 STAssertTrue([theObject isEqual:TXPropertyList(@"()")], @"Result of scan didn't match expectations.");
 }
 
+- (void)testEmptyDictionary1
+{
+id theObject = NULL;
+BOOL theResult = Scan(@"{}", &theObject);
+STAssertTrue(theResult, @"Scan return failure.");
+STAssertTrue([theObject isEqual:TXPropertyList(@"{}")], @"Result of scan didn't match expectations.");
+}
 
+- (void)testEmptyDictionary2
+{
+id theObject = NULL;
+BOOL theResult = Scan(@"{\"Foo\":{}}", &theObject);
+STAssertTrue(theResult, @"Scan return failure.");
+//STAssertTrue([theObject isEqual:TXPropertyList(@"{}")], @"Result of scan didn't match expectations.");
+}
 
+- (void)testEmptyDictionary3
+{
+id theObject = NULL;
+BOOL theResult = Scan(@"{ }", &theObject);
+STAssertTrue(theResult, @"Scan return failure.");
+STAssertTrue([theObject isEqual:TXPropertyList(@"{}")], @"Result of scan didn't match expectations.");
+}
+
+- (void)testDanielPascoCode1
+{
+id theObject = NULL;
+NSString *theSource = @"{\"status\": \"ok\", \"operation\": \"new_task\", \"task\": {\"status\": 0, \"updated_at\": {}, \"project_id\": 7179, \"dueDate\": null, \"creator_id\": 1, \"type_id\": 0, \"priority\": 1, \"id\": 37087, \"summary\": \"iPhone test\", \"description\": null, \"creationDate\": {}, \"owner_id\": 1, \"noteCount\": 0, \"commentCount\": 0}}";
+BOOL theResult = Scan(theSource, &theObject);
+STAssertTrue(theResult, @"Scan return failure.");
+}
+
+- (void)testDanielPascoCode2
+{
+id theObject = NULL;
+NSString *theSource = @"{\"status\": \"ok\", \"operation\": \"new_task\", \"task\": {\"status\": 0, \"project_id\": 7179, \"dueDate\": null, \"creator_id\": 1, \"type_id\": 0, \"priority\": 1, \"id\": 37087, \"summary\": \"iPhone test\", \"description\": null, \"owner_id\": 1, \"noteCount\": 0, \"commentCount\": 0}}";
+BOOL theResult = Scan(theSource, &theObject);
+STAssertTrue(theResult, @"Scan return failure.");
+}
+
+- (void)testTomHaringtonCode1
+{
+id theObject = NULL;
+NSString *theSource = @"{\"r\":[{\"name\":\"KEXP\",\"desc\":\"90.3 - Where The Music Matters\",\"icon\":\"\\/img\\/channels\\/radio_stream.png\",\"audiostream\":\"http:\\/\\/kexp-mp3-1.cac.washington.edu:8000\\/\",\"type\":\"radio\",\"stream\":\"fb8155000526e0abb5f8d1e02c54cb83094cffae\",\"relay\":\"r2b\"}]}";
+BOOL theResult = Scan(theSource, &theObject);
+STAssertTrue(theResult, @"Scan return failure.");
+}
 
 @end

@@ -68,7 +68,7 @@
 		4505886D099952F600FB865F /* CJSONScanner_UnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONScanner_UnitTests.m; sourceTree = "<group>"; };
 		4505886E099952F600FB865F /* CJSONSerializer_UnitTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJSONSerializer_UnitTests.h; sourceTree = "<group>"; };
 		4505886F099952F600FB865F /* CJSONSerializer_UnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer_UnitTests.m; sourceTree = "<group>"; };
-		45058870099952F600FB865F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Info.plist; sourceTree = "<group>"; };
+		45058870099952F600FB865F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		451F85B30DB6E06800136680 /* CDataScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDataScanner.h; sourceTree = "<group>"; };
 		451F85B40DB6E06800136680 /* CDataScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDataScanner.m; sourceTree = "<group>"; };
 		453111820A64ECFA00A970C2 /* Blake.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Blake.json; sourceTree = "<group>"; };
