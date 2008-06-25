@@ -229,6 +229,14 @@ while ([self scanCharacter:'}'] == NO)
 		}
 	}
 
+if ([self scanCharacter:'}'] == NO)
+	{
+	if (outError)
+		{
+		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-5 userInfo:NULL];
+		}
+	}
+
 if (outDictionary != NULL)
 	*outDictionary = theDictionary;
 return(YES);

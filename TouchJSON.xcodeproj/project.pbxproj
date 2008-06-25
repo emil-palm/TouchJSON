@@ -22,7 +22,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		45058873099952F600FB865F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 45058870099952F600FB865F /* Info.plist */; };
 		4505889E0999539300FB865F /* CJSONDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4567B5B90951D51A00ECB961 /* CJSONDeserializer.m */; };
 		451F85B50DB6E06800136680 /* CDataScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F85B40DB6E06800136680 /* CDataScanner.m */; };
 		451F85B60DB6E06800136680 /* CDataScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 451F85B40DB6E06800136680 /* CDataScanner.m */; };
@@ -261,7 +260,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				45058873099952F600FB865F /* Info.plist in Resources */,
 				453111830A64ECFA00A970C2 /* Blake.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
