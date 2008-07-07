@@ -14,34 +14,35 @@ NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
 NSString *theFilename = [NSString stringWithUTF8String:argv[1]];
 NSData *theContentData = [NSData dataWithContentsOfFile:theFilename];
 
-testfuncptr theTestPtr = NULL;
-if (strcmp(argv[2], "TouchJSON") == 0)
-	theTestPtr = TouchJSONTest;
-else if (strcmp(argv[2], "BSJSON") == 0)
-	theTestPtr = BSJSONTest;
-else if (strcmp(argv[2], "SbrautasetJSON") == 0)
-	theTestPtr = SbrautasetJSONTest;
+NSString *theFunctionNames[] = { @"TouchJSON", @"Sbrautaset", @"BSJSON" };
+testfuncptr theFunctions[] = { TouchJSONTest, SbrautasetJSONTest, BSJSONTest };
 
-int theCount = 1;
-
-UInt64 M0, M1;
-
-Microseconds((UnsignedWide *)&M0);
-
-for (int N = 0; N != theCount; ++N)
+for (int N = 0; N != 2; ++N)
 	{
-	NSAutoreleasePool *theTestPool = [[NSAutoreleasePool alloc] init];
+	testfuncptr theTestPtr = theFunctions[N];
+	NSLog(@"Library: %@", theFunctionNames[N]);
+	int theCount = 1;
 
-	NSDictionary *theOutput = (*theTestPtr)(theContentData);
-//	[theOutput retain];
+	UInt64 M0, M1;
 
-	[theTestPool drain];
+	Microseconds((UnsignedWide *)&M0);
 
-//	[theOutput autorelease];
+	for (int N = 0; N != theCount; ++N)
+		{
+		NSAutoreleasePool *theTestPool = [[NSAutoreleasePool alloc] init];
+
+		NSDictionary *theOutput = (*theTestPtr)(theContentData);
+	//	[theOutput retain];
+
+		[theTestPool drain];
+
+	//	[theOutput autorelease];
+		}
+
+	Microseconds((UnsignedWide *)&M1);
+	NSLog(@"Microseconds: %g\n", ((double)(M1 - M0) / (double)theCount) / 1000000.0);
 	}
 
-Microseconds((UnsignedWide *)&M1);
-NSLog(@"Microseconds: %g\n", ((double)(M1 - M0) / (double)theCount) / 1000000.0);
 
 [thePool drain];
 return 0;

@@ -68,7 +68,7 @@
 		45F3F7170DB7BD2F00084331 /* CJSONScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONScanner.m; sourceTree = "<group>"; };
 		45F3F7190DB7BD2F00084331 /* CJSONSerializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJSONSerializer.h; sourceTree = "<group>"; };
 		45F3F71A0DB7BD2F00084331 /* CJSONSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer.m; sourceTree = "<group>"; };
-		8DD76FA10486AA7600D96B5E /* JSONBenchmark */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JSONBenchmark; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DD76FA10486AA7600D96B5E /* JSONBenchmarking */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = JSONBenchmarking; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,7 +121,7 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DD76FA10486AA7600D96B5E /* JSONBenchmark */,
+				8DD76FA10486AA7600D96B5E /* JSONBenchmarking */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -212,7 +212,7 @@
 			name = JSONBenchmark;
 			productInstallPath = "$(HOME)/bin";
 			productName = JSONBenchmarking;
-			productReference = 8DD76FA10486AA7600D96B5E /* JSONBenchmark */;
+			productReference = 8DD76FA10486AA7600D96B5E /* JSONBenchmarking */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
