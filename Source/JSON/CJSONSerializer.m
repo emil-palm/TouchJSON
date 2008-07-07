@@ -151,7 +151,7 @@ NSEnumerator *theEnumerator = [theKeys objectEnumerator];
 NSString *theKey = NULL;
 while ((theKey = [theEnumerator nextObject]) != NULL)
 	{
-	id theValue = [inDictionary valueForKey:theKey];
+	id theValue = [inDictionary objectForKey:theKey];
 	
 	[theString appendFormat:@"%@:%@", [self serializeString:theKey], [self serializeObject:theValue]];
 	if (theKey != [theKeys lastObject])
