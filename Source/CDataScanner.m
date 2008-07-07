@@ -18,10 +18,12 @@
 
 inline static unichar CharacterAtPointer(void *start, void *end)
 {
+#pragma unused(end)
+
 const u_int8_t theByte = *(u_int8_t *)start;
 if (theByte & 0x80)
 	{
-	// TODO -- UNICODE!!!!
+	// TODO -- UNICODE!!!! (well in theory nothing todo here)
 	}
 const unichar theCharacter = theByte;
 return(theCharacter);
@@ -58,9 +60,9 @@ self.doubleCharacters = NULL;
 [super dealloc];
 }
 
-- (NSInteger)scanLocation
+- (NSUInteger)scanLocation
 {
-return current - start;
+return(current - start);
 }
 
 - (NSData *)data
@@ -90,7 +92,7 @@ if (data != inData)
     }
 }
 
-- (void)setScanLocation:(NSInteger)inScanLocation
+- (void)setScanLocation:(NSUInteger)inScanLocation
 {
 current = start + inScanLocation;
 }
@@ -104,6 +106,8 @@ return(self.scanLocation >= length);
 {
 return(CharacterAtPointer(current, end));
 }
+
+#pragma mark -
 
 - (unichar)scanCharacter
 {
@@ -126,7 +130,7 @@ else
 - (BOOL)scanUTF8String:(const char *)inString intoString:(NSString **)outValue;
 {
 const size_t theLength = strlen(inString);
-if (end - current < theLength)
+if ((size_t)(end - current) < theLength)
 	return(NO);
 if (strncmp((char *)current, inString, theLength) == 0)
 	{
@@ -140,7 +144,7 @@ return(NO);
 
 - (BOOL)scanString:(NSString *)inString intoString:(NSString **)outValue
 {
-if (end - current < inString.length)
+if ((size_t)(end - current) < inString.length)
 	return(NO);
 if (strncmp((char *)current, [inString UTF8String], inString.length) == 0)
 	{
@@ -224,6 +228,15 @@ if ([self scanCharactersFromSet:doubleCharacters intoString:&theString])
 	return(YES);
 	}
 return(NO);
+}
+
+- (void)skipWhitespace
+{
+u_int8_t *P;
+for (P = current; P < end && (isspace(*P)); ++P)
+	;
+
+current = P;
 }
 
 @end

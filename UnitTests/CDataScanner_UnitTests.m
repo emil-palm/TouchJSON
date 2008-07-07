@@ -25,16 +25,16 @@ BOOL theResult =
 theResult = [theScanner scanString:@"Hello" intoString:&theString];
 STAssertTrue(theResult, NULL);
 STAssertEqualObjects(theString, @"Hello", NULL);
-STAssertEquals(theScanner.scanLocation, 5, NULL);
+STAssertEquals(theScanner.scanLocation, 5U, NULL);
 
 theResult = [theScanner scanCharacter:' '];
 STAssertTrue(theResult, NULL);
-STAssertEquals(theScanner.scanLocation, 6, NULL);
+STAssertEquals(theScanner.scanLocation, 6U, NULL);
 
 theResult = [theScanner scanCharactersFromSet:[NSCharacterSet alphanumericCharacterSet] intoString:&theString];
 STAssertTrue(theResult, NULL);
 STAssertEqualObjects(theString, @"World", NULL);
-STAssertEquals(theScanner.scanLocation, 11, NULL);
+STAssertEquals(theScanner.scanLocation, 11U, NULL);
 
 
 STAssertTrue(theScanner.isAtEnd, NULL);

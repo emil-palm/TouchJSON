@@ -11,6 +11,8 @@
 #import "NSCharacterSet_Extensions.h"
 #import "CDataScanner_Extensions.h"
 
+NSString *const kJSONScannerErrorDomain = @"CJSONScannerErrorDomain";
+
 inline static int HexToInt(char inCharacter)
 {
 int theValues[] = { 0x0 /* 48 '0' */, 0x1 /* 49 '1' */, 0x2 /* 50 '2' */, 0x3 /* 51 '3' */, 0x4 /* 52 '4' */, 0x5 /* 53 '5' */, 0x6 /* 54 '6' */, 0x7 /* 55 '7' */, 0x8 /* 56 '8' */, 0x9 /* 57 '9' */, -1 /* 58 ':' */, -1 /* 59 ';' */, -1 /* 60 '<' */, -1 /* 61 '=' */, -1 /* 62 '>' */, -1 /* 63 '?' */, -1 /* 64 '@' */, 0xa /* 65 'A' */, 0xb /* 66 'B' */, 0xc /* 67 'C' */, 0xd /* 68 'D' */, 0xe /* 69 'E' */, 0xf /* 70 'F' */, -1 /* 71 'G' */, -1 /* 72 'H' */, -1 /* 73 'I' */, -1 /* 74 'J' */, -1 /* 75 'K' */, -1 /* 76 'L' */, -1 /* 77 'M' */, -1 /* 78 'N' */, -1 /* 79 'O' */, -1 /* 80 'P' */, -1 /* 81 'Q' */, -1 /* 82 'R' */, -1 /* 83 'S' */, -1 /* 84 'T' */, -1 /* 85 'U' */, -1 /* 86 'V' */, -1 /* 87 'W' */, -1 /* 88 'X' */, -1 /* 89 'Y' */, -1 /* 90 'Z' */, -1 /* 91 '[' */, -1 /* 92 '\' */, -1 /* 93 ']' */, -1 /* 94 '^' */, -1 /* 95 '_' */, -1 /* 96 '`' */, 0xa /* 97 'a' */, 0xb /* 98 'b' */, 0xc /* 99 'c' */, 0xd /* 100 'd' */, 0xe /* 101 'e' */, 0xf /* 102 'f' */, };
@@ -58,7 +60,7 @@ self.whitespaceCharacterSet = NULL;
 NSData *theData = inData;
 if (theData && theData.length >= 4)
 	{
-	// This code is lame, but it works. Because the first character of any JSON string will always be a control character we can work out the Unicode encoding by the bit pattern. See section 3 of http://www.ietf.org/rfc/rfc4627.txt
+	// This code is lame, but it works. Because the first character of any JSON string will always be a (ascii) control character we can work out the Unicode encoding by the bit pattern. See section 3 of http://www.ietf.org/rfc/rfc4627.txt
 	const char *theChars = theData.bytes;
 	NSStringEncoding theEncoding = NSUTF8StringEncoding;
 	if (theChars[0] != 0 && theChars[1] == 0)
@@ -78,8 +80,9 @@ if (theData && theData.length >= 4)
 		
 	if (theEncoding != NSUTF8StringEncoding)
 		{
-		NSString *theString = [[[NSString alloc] initWithData:theData encoding:theEncoding] autorelease];
+		NSString *theString = [[NSString alloc] initWithData:theData encoding:theEncoding];
 		theData = [theString dataUsingEncoding:NSUTF8StringEncoding];
+		[theString release];
 		}
 	}
 [super setData:theData];
@@ -149,20 +152,18 @@ return(YES);
 
 - (BOOL)scanJSONDictionary:(NSDictionary **)outDictionary error:(NSError **)outError
 {
-unsigned theScanLocation = [self scanLocation];
-
-//[self skipJSONWhitespace];
+NSUInteger theScanLocation = [self scanLocation];
 
 if ([self scanCharacter:'{'] == NO)
 	{
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-1 userInfo:NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-1 userInfo:NULL];
 		}
 	return(NO);
 	}
 
-NSMutableDictionary *theDictionary = [NSMutableDictionary dictionary];
+NSMutableDictionary *theDictionary = [[NSMutableDictionary alloc] init];
 
 while ([self scanCharacter:'}'] == NO)
 	{
@@ -177,7 +178,8 @@ while ([self scanCharacter:'}'] == NO)
 		[self setScanLocation:theScanLocation];
 		if (outError)
 			{
-			*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-2 userInfo:NULL];
+			[theDictionary release];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-2 userInfo:NULL];
 			}
 		return(NO);
 		}
@@ -189,7 +191,8 @@ while ([self scanCharacter:'}'] == NO)
 		[self setScanLocation:theScanLocation];
 		if (outError)
 			{
-			*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-3 userInfo:NULL];
+			[theDictionary release];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-3 userInfo:NULL];
 			}
 		return(NO);
 		}
@@ -200,7 +203,8 @@ while ([self scanCharacter:'}'] == NO)
 		[self setScanLocation:theScanLocation];
 		if (outError)
 			{
-			*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-4 userInfo:NULL];
+			[theDictionary release];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-4 userInfo:NULL];
 			}
 		return(NO);
 		}
@@ -215,7 +219,8 @@ while ([self scanCharacter:'}'] == NO)
 			[self setScanLocation:theScanLocation];
 			if (outError)
 				{
-				*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-5 userInfo:NULL];
+				[theDictionary release];
+				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-5 userInfo:NULL];
 				}
 			return(NO);
 			}
@@ -233,30 +238,32 @@ if ([self scanCharacter:'}'] == NO)
 	{
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-5 userInfo:NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-5 userInfo:NULL];
 		}
 	}
 
 if (outDictionary != NULL)
-	*outDictionary = theDictionary;
+	*outDictionary = [[theDictionary copy] autorelease];
+
+[theDictionary release];
+
 return(YES);
 }
 
 - (BOOL)scanJSONArray:(NSArray **)outArray error:(NSError **)outError
 {
-unsigned theScanLocation = [self scanLocation];
+NSUInteger theScanLocation = [self scanLocation];
 
-//[self skipJSONWhitespace];
 if ([self scanCharacter:'['] == NO)
 	{
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-7 userInfo:NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-7 userInfo:NULL];
 		}
 	return(NO);
 	}
 
-NSMutableArray *theArray = [NSMutableArray array];
+NSMutableArray *theArray = [[NSMutableArray alloc] init];
 
 [self skipJSONWhitespace];
 while ([self currentCharacter] != ']')
@@ -267,7 +274,8 @@ while ([self currentCharacter] != ']')
 		[self setScanLocation:theScanLocation];
 		if (outError)
 			{
-			*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-8 userInfo:NULL];
+			[theArray release];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-8 userInfo:NULL];
 			}
 		return(NO);
 		}
@@ -283,7 +291,8 @@ while ([self currentCharacter] != ']')
 			[self setScanLocation:theScanLocation];
 			if (outError)
 				{
-				*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-9 userInfo:NULL];
+				[theArray release];
+				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-9 userInfo:NULL];
 				}
 			return(NO);
 			}
@@ -300,30 +309,34 @@ if ([self scanCharacter:']'] == NO)
 	[self setScanLocation:theScanLocation];
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-10 userInfo:NULL];
+		[theArray release];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-10 userInfo:NULL];
 		}
 	return(NO);
 	}
 
 if (outArray != NULL)
-	*outArray = theArray;
+	*outArray = [[theArray copy] autorelease];
+
+[theArray release];
+
 return(YES);
 }
 
 - (BOOL)scanJSONStringConstant:(NSString **)outStringConstant error:(NSError **)outError
 {
-unsigned theScanLocation = [self scanLocation];
+NSUInteger theScanLocation = [self scanLocation];
 
 [self skipJSONWhitespace]; //  TODO - i want to remove this method. But breaks unit tests.
 
-NSMutableString *theString = [NSMutableString string];
+NSMutableString *theString = [[NSMutableString alloc] init];
 
 if ([self scanCharacter:'"'] == NO)
 	{
 	[self setScanLocation:theScanLocation];
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-11 userInfo:NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-11 userInfo:NULL];
 		}
 	return(NO);
 	}
@@ -373,7 +386,8 @@ while ([self scanCharacter:'"'] == NO)
 						[self setScanLocation:theScanLocation];
 						if (outError)
 							{
-							*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-12 userInfo:NULL];
+							[theString release];
+							*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-12 userInfo:NULL];
 							}
 						return(NO);
 						}
@@ -386,27 +400,27 @@ while ([self scanCharacter:'"'] == NO)
 				[self setScanLocation:theScanLocation];
 				if (outError)
 					{
-					*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-13 userInfo:NULL];
+					[theString release];
+					*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-13 userInfo:NULL];
 					}
 				return(NO);
 				}
 				break;
 			}
 		CFStringAppendCharacters((CFMutableStringRef)theString, &theCharacter, 1);
-//		[theString appendFormat:@"%C", theCharacter];
 		}
 	}
 	
 if (outStringConstant != NULL)
-	*outStringConstant = theString;
+	*outStringConstant = [[theString copy] autorelease];
+
+[theString release];
 
 return(YES);
 }
 
 - (BOOL)scanJSONNumberConstant:(NSNumber **)outNumberConstant error:(NSError **)outError
 {
-//[self skipJSONWhitespace];
-
 NSNumber *theNumber = NULL;
 if ([self scanNumber:&theNumber] == YES)
 	{
@@ -418,7 +432,7 @@ else
 	{
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:@"CJSONScannerErrorDomain" code:-14 userInfo:NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-14 userInfo:NULL];
 		}
 	return(NO);
 	}
@@ -426,7 +440,7 @@ else
 
 - (void)skipJSONWhitespace
 {
-[self scanCharactersFromSet:whitespaceCharacterSet intoString:NULL];
+[self skipWhitespace];
 if (scanComments)
 	{
 	[self scanCStyleComment:NULL];

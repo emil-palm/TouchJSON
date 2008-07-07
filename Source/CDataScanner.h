@@ -22,7 +22,7 @@
 }
 
 @property (readwrite, retain) NSData *data;
-@property (readwrite, assign) NSInteger scanLocation;
+@property (readwrite, assign) NSUInteger scanLocation;
 @property (readonly, assign) BOOL isAtEnd;
 
 + (id)scannerWithData:(NSData *)inData;
@@ -39,5 +39,8 @@
 - (BOOL)scanUpToCharactersFromSet:(NSCharacterSet *)set intoString:(NSString **)outValue; // inSet must only contain 7-bit ASCII characters
 
 - (BOOL)scanNumber:(NSNumber **)outValue;
+
+- (void)skipWhitespace;
+
 
 @end

@@ -24,3 +24,5 @@
 - (void)skipJSONWhitespace;
 
 @end
+
+extern NSString *const kJSONScannerErrorDomain /* = @"CJSONScannerErrorDomain" */;
