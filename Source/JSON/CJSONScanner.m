@@ -23,7 +23,7 @@ else
 }
 
 @interface CJSONScanner ()
-@property (readwrite, nonatomic, retain) NSCharacterSet *notQuoteCharacters;
+- (BOOL)scanNotQuoteCharactersIntoString:(NSString **)outValue;
 @end
 
 #pragma mark -
@@ -31,20 +31,17 @@ else
 @implementation CJSONScanner
 
 @synthesize scanComments;
-@synthesize notQuoteCharacters;
 
 - (id)init
 {
 if ((self = [super init]) != nil)
 	{
-	self.notQuoteCharacters = [[NSCharacterSet characterSetWithCharactersInString:@"\\\""] invertedSet];
 	}
 return(self);
 }
 
 - (void)dealloc
 {
-self.notQuoteCharacters = NULL;
 //
 [super dealloc];
 }
@@ -375,7 +372,7 @@ if ([self scanCharacter:'"'] == NO)
 while ([self scanCharacter:'"'] == NO)
 	{
 	NSString *theStringChunk = NULL;
-	if ([self scanCharactersFromSet:notQuoteCharacters intoString:&theStringChunk])
+	if ([self scanNotQuoteCharactersIntoString:&theStringChunk])
 		{
 		[theString appendString:theStringChunk];
 		}
@@ -487,6 +484,29 @@ if (scanComments)
 	[self scanCPlusPlusStyleComment:NULL];
 	[self skipWhitespace];
 	}
+}
+
+#pragma mark -
+
+- (BOOL)scanNotQuoteCharactersIntoString:(NSString **)outValue
+{
+u_int8_t *P;
+for (P = current; P < end && *P != '\"' && *P != '\\'; ++P)
+	;
+
+if (P == current)
+	{
+	return(NO);
+	}
+
+if (outValue)
+	{
+	*outValue = [[[NSString alloc] initWithBytes:current length:P - current encoding:NSUTF8StringEncoding] autorelease];
+	}
+	
+current = P;
+
+return(YES);
 }
 
 @end

@@ -10,7 +10,6 @@
 
 @interface CJSONScanner : CDataScanner {
 	BOOL scanComments;
-	NSCharacterSet *notQuoteCharacters;
 }
 
 @property (readwrite, nonatomic, assign) BOOL scanComments;
