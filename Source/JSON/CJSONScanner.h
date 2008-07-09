@@ -11,10 +11,9 @@
 @interface CJSONScanner : CDataScanner {
 	BOOL scanComments;
 	NSCharacterSet *notQuoteCharacters;
-	NSCharacterSet *whitespaceCharacterSet;
 }
 
-@property (readwrite, assign) BOOL scanComments;
+@property (readwrite, nonatomic, assign) BOOL scanComments;
 
 - (BOOL)scanJSONObject:(id *)outObject error:(NSError **)outError;
 - (BOOL)scanJSONDictionary:(NSDictionary **)outDictionary error:(NSError **)outError;

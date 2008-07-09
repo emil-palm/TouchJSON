@@ -11,7 +11,7 @@
 #import "CDataScanner_Extensions.h"
 
 @interface CDataScanner ()
-@property (readwrite, retain) NSCharacterSet *doubleCharacters;
+@property (readwrite, nonatomic, retain) NSCharacterSet *doubleCharacters;
 @end
 
 #pragma mark -
@@ -237,6 +237,13 @@ for (P = current; P < end && (isspace(*P)); ++P)
 	;
 
 current = P;
+}
+
+- (NSString *)remainingString
+{
+NSData *theRemainingData = [NSData dataWithBytes:current length:end - current];
+NSString *theString = [[[NSString alloc] initWithData:theRemainingData encoding:NSUTF8StringEncoding] autorelease];
+return(theString);
 }
 
 @end

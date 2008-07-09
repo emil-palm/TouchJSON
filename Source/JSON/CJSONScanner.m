@@ -23,8 +23,7 @@ else
 }
 
 @interface CJSONScanner ()
-@property (readwrite, retain) NSCharacterSet *notQuoteCharacters;
-@property (readwrite, retain) NSCharacterSet *whitespaceCharacterSet;
+@property (readwrite, nonatomic, retain) NSCharacterSet *notQuoteCharacters;
 @end
 
 #pragma mark -
@@ -33,14 +32,12 @@ else
 
 @synthesize scanComments;
 @synthesize notQuoteCharacters;
-@synthesize whitespaceCharacterSet;
 
 - (id)init
 {
 if ((self = [super init]) != nil)
 	{
 	self.notQuoteCharacters = [[NSCharacterSet characterSetWithCharactersInString:@"\\\""] invertedSet];
-	self.whitespaceCharacterSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
 	}
 return(self);
 }
@@ -48,7 +45,6 @@ return(self);
 - (void)dealloc
 {
 self.notQuoteCharacters = NULL;
-self.whitespaceCharacterSet = NULL;
 //
 [super dealloc];
 }
@@ -158,18 +154,21 @@ if ([self scanCharacter:'{'] == NO)
 	{
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-1 userInfo:NULL];
+		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"Could not scan dictionary. Dictionary that does not start with '{' character.", NSLocalizedDescriptionKey,
+			NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-1 userInfo:theUserInfo];
 		}
 	return(NO);
 	}
 
 NSMutableDictionary *theDictionary = [[NSMutableDictionary alloc] init];
 
-while ([self scanCharacter:'}'] == NO)
+while ([self currentCharacter] != '}')
 	{
 	[self skipJSONWhitespace];
 	
-	if ([self scanCharacter:'}'] == YES)
+	if ([self currentCharacter] == '}')
 		break;
 
 	NSString *theKey = NULL;
@@ -179,7 +178,10 @@ while ([self scanCharacter:'}'] == NO)
 		if (outError)
 			{
 			[theDictionary release];
-			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-2 userInfo:NULL];
+			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+				@"Could not scan dictionary. Failed to scan a key.", NSLocalizedDescriptionKey,
+				NULL];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-2 userInfo:theUserInfo];
 			}
 		return(NO);
 		}
@@ -192,7 +194,10 @@ while ([self scanCharacter:'}'] == NO)
 		if (outError)
 			{
 			[theDictionary release];
-			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-3 userInfo:NULL];
+			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+				@"Could not scan dictionary. Key was not terminated with a ':' character.", NSLocalizedDescriptionKey,
+				NULL];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-3 userInfo:theUserInfo];
 			}
 		return(NO);
 		}
@@ -204,7 +209,10 @@ while ([self scanCharacter:'}'] == NO)
 		if (outError)
 			{
 			[theDictionary release];
-			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-4 userInfo:NULL];
+			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+				@"Could not scan dictionary. Failed to scan a value.", NSLocalizedDescriptionKey,
+				NULL];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-4 userInfo:theUserInfo];
 			}
 		return(NO);
 		}
@@ -220,7 +228,10 @@ while ([self scanCharacter:'}'] == NO)
 			if (outError)
 				{
 				[theDictionary release];
-				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-5 userInfo:NULL];
+				NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+					@"Could not scan dictionary. Key value pairs not delimited with a ',' character.", NSLocalizedDescriptionKey,
+					NULL];
+				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-5 userInfo:theUserInfo];
 				}
 			return(NO);
 			}
@@ -236,10 +247,15 @@ while ([self scanCharacter:'}'] == NO)
 
 if ([self scanCharacter:'}'] == NO)
 	{
+	[self setScanLocation:theScanLocation];
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-5 userInfo:NULL];
+		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"Could not scan dictionary. Dictionary not terminated by a '}' character.", NSLocalizedDescriptionKey,
+			NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-6 userInfo:theUserInfo];
 		}
+	return(NO);
 	}
 
 if (outDictionary != NULL)
@@ -258,7 +274,10 @@ if ([self scanCharacter:'['] == NO)
 	{
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-7 userInfo:NULL];
+		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"Could not scan array. Array not started by a '{' character.", NSLocalizedDescriptionKey,
+			NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-7 userInfo:theUserInfo];
 		}
 	return(NO);
 	}
@@ -275,7 +294,10 @@ while ([self currentCharacter] != ']')
 		if (outError)
 			{
 			[theArray release];
-			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-8 userInfo:NULL];
+			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+				@"Could not scan array. Could not scan a value.", NSLocalizedDescriptionKey,
+				NULL];
+			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-8 userInfo:theUserInfo];
 			}
 		return(NO);
 		}
@@ -292,7 +314,10 @@ while ([self currentCharacter] != ']')
 			if (outError)
 				{
 				[theArray release];
-				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-9 userInfo:NULL];
+				NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+					@"Could not scan array. Array not terminated by a ']' character.", NSLocalizedDescriptionKey,
+					NULL];
+				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-9 userInfo:theUserInfo];
 				}
 			return(NO);
 			}
@@ -310,7 +335,10 @@ if ([self scanCharacter:']'] == NO)
 	if (outError)
 		{
 		[theArray release];
-		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-10 userInfo:NULL];
+		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"Could not scan array. Array not terminated by a ']' character.", NSLocalizedDescriptionKey,
+			NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-10 userInfo:theUserInfo];
 		}
 	return(NO);
 	}
@@ -336,7 +364,10 @@ if ([self scanCharacter:'"'] == NO)
 	[self setScanLocation:theScanLocation];
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-11 userInfo:NULL];
+		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"Could not scan string constant. String not started by a '\"' character.", NSLocalizedDescriptionKey,
+			NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-11 userInfo:theUserInfo];
 		}
 	return(NO);
 	}
@@ -387,7 +418,10 @@ while ([self scanCharacter:'"'] == NO)
 						if (outError)
 							{
 							[theString release];
-							*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-12 userInfo:NULL];
+							NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+								@"Could not scan string constant. Unicode character could not be decoded.", NSLocalizedDescriptionKey,
+								NULL];
+							*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-12 userInfo:theUserInfo];
 							}
 						return(NO);
 						}
@@ -401,7 +435,10 @@ while ([self scanCharacter:'"'] == NO)
 				if (outError)
 					{
 					[theString release];
-					*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-13 userInfo:NULL];
+					NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+						@"Could not scan string constant. Unknown escape code.", NSLocalizedDescriptionKey,
+						NULL];
+					*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-13 userInfo:theUserInfo];
 					}
 				return(NO);
 				}
@@ -432,7 +469,10 @@ else
 	{
 	if (outError)
 		{
-		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-14 userInfo:NULL];
+		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+			@"Could not scan number constant.", NSLocalizedDescriptionKey,
+			NULL];
+		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-14 userInfo:theUserInfo];
 		}
 	return(NO);
 	}
@@ -445,7 +485,7 @@ if (scanComments)
 	{
 	[self scanCStyleComment:NULL];
 	[self scanCPlusPlusStyleComment:NULL];
-	[self scanCharactersFromSet:whitespaceCharacterSet intoString:NULL];
+	[self skipWhitespace];
 	}
 }
 

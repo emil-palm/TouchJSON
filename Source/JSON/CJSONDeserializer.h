@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const kJSONDeserializerErrorDomain /* = @"CJSONDeserializerErrorDomain" */;
+
 @interface CJSONDeserializer : NSObject {
 
 }
@@ -17,3 +19,4 @@
 - (id)deserialize:(NSData *)inData error:(NSError **)outError;
 
 @end
+

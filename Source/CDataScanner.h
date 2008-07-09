@@ -21,9 +21,9 @@
 	NSCharacterSet *doubleCharacters;
 }
 
-@property (readwrite, retain) NSData *data;
-@property (readwrite, assign) NSUInteger scanLocation;
-@property (readonly, assign) BOOL isAtEnd;
+@property (readwrite, nonatomic, retain) NSData *data;
+@property (readwrite, nonatomic, assign) NSUInteger scanLocation;
+@property (readonly, nonatomic, assign) BOOL isAtEnd;
 
 + (id)scannerWithData:(NSData *)inData;
 
@@ -42,5 +42,6 @@
 
 - (void)skipWhitespace;
 
+- (NSString *)remainingString;
 
 @end
