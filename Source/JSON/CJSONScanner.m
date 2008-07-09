@@ -175,9 +175,9 @@ while ([self currentCharacter] != '}')
 	if ([self scanJSONStringConstant:&theKey error:outError] == NO)
 		{
 		[self setScanLocation:theScanLocation];
+		[theDictionary release];
 		if (outError)
 			{
-			[theDictionary release];
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 				@"Could not scan dictionary. Failed to scan a key.", NSLocalizedDescriptionKey,
 				NULL];
@@ -191,9 +191,9 @@ while ([self currentCharacter] != '}')
 	if ([self scanCharacter:':'] == NO)
 		{
 		[self setScanLocation:theScanLocation];
+		[theDictionary release];
 		if (outError)
 			{
-			[theDictionary release];
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 				@"Could not scan dictionary. Key was not terminated with a ':' character.", NSLocalizedDescriptionKey,
 				NULL];
@@ -206,9 +206,9 @@ while ([self currentCharacter] != '}')
 	if ([self scanJSONObject:&theValue error:outError] == NO)
 		{
 		[self setScanLocation:theScanLocation];
+		[theDictionary release];
 		if (outError)
 			{
-			[theDictionary release];
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 				@"Could not scan dictionary. Failed to scan a value.", NSLocalizedDescriptionKey,
 				NULL];
@@ -225,9 +225,9 @@ while ([self currentCharacter] != '}')
 		if ([self currentCharacter] != '}')
 			{
 			[self setScanLocation:theScanLocation];
+			[theDictionary release];
 			if (outError)
 				{
-				[theDictionary release];
 				NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 					@"Could not scan dictionary. Key value pairs not delimited with a ',' character.", NSLocalizedDescriptionKey,
 					NULL];
@@ -291,9 +291,9 @@ while ([self currentCharacter] != ']')
 	if ([self scanJSONObject:&theValue error:outError] == NO)
 		{
 		[self setScanLocation:theScanLocation];
+		[theArray release];
 		if (outError)
 			{
-			[theArray release];
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 				@"Could not scan array. Could not scan a value.", NSLocalizedDescriptionKey,
 				NULL];
@@ -415,9 +415,9 @@ while ([self scanCharacter:'"'] == NO)
 					if (theDigit == -1)
 						{
 						[self setScanLocation:theScanLocation];
+						[theString release];
 						if (outError)
 							{
-							[theString release];
 							NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 								@"Could not scan string constant. Unicode character could not be decoded.", NSLocalizedDescriptionKey,
 								NULL];
@@ -432,9 +432,9 @@ while ([self scanCharacter:'"'] == NO)
 			default:
 				{
 				[self setScanLocation:theScanLocation];
+				[theString release];
 				if (outError)
 					{
-					[theString release];
 					NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 						@"Could not scan string constant. Unknown escape code.", NSLocalizedDescriptionKey,
 						NULL];
