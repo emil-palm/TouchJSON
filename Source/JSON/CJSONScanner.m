@@ -174,7 +174,6 @@ while ([self currentCharacter] != '}')
 	if ([self scanJSONStringConstant:&theKey error:outError] == NO)
 		{
 		[self setScanLocation:theScanLocation];
-		[theDictionary release];
 		if (outError)
 			{
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -182,6 +181,7 @@ while ([self currentCharacter] != '}')
 				NULL];
 			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-2 userInfo:theUserInfo];
 			}
+		[theDictionary release];
 		return(NO);
 		}
 
@@ -190,7 +190,6 @@ while ([self currentCharacter] != '}')
 	if ([self scanCharacter:':'] == NO)
 		{
 		[self setScanLocation:theScanLocation];
-		[theDictionary release];
 		if (outError)
 			{
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -198,6 +197,7 @@ while ([self currentCharacter] != '}')
 				NULL];
 			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-3 userInfo:theUserInfo];
 			}
+		[theDictionary release];
 		return(NO);
 		}
 
@@ -205,7 +205,6 @@ while ([self currentCharacter] != '}')
 	if ([self scanJSONObject:&theValue error:outError] == NO)
 		{
 		[self setScanLocation:theScanLocation];
-		[theDictionary release];
 		if (outError)
 			{
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -213,6 +212,7 @@ while ([self currentCharacter] != '}')
 				NULL];
 			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-4 userInfo:theUserInfo];
 			}
+		[theDictionary release];
 		return(NO);
 		}
 
@@ -224,7 +224,6 @@ while ([self currentCharacter] != '}')
 		if ([self currentCharacter] != '}')
 			{
 			[self setScanLocation:theScanLocation];
-			[theDictionary release];
 			if (outError)
 				{
 				NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -232,6 +231,7 @@ while ([self currentCharacter] != '}')
 					NULL];
 				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-5 userInfo:theUserInfo];
 				}
+			[theDictionary release];
 			return(NO);
 			}
 		break;
@@ -254,6 +254,7 @@ if ([self scanCharacter:'}'] == NO)
 			NULL];
 		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-6 userInfo:theUserInfo];
 		}
+	[theDictionary release];
 	return(NO);
 	}
 
@@ -290,7 +291,6 @@ while ([self currentCharacter] != ']')
 	if ([self scanJSONObject:&theValue error:outError] == NO)
 		{
 		[self setScanLocation:theScanLocation];
-		[theArray release];
 		if (outError)
 			{
 			NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -298,6 +298,7 @@ while ([self currentCharacter] != ']')
 				NULL];
 			*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-8 userInfo:theUserInfo];
 			}
+		[theArray release];
 		return(NO);
 		}
 
@@ -312,12 +313,12 @@ while ([self currentCharacter] != ']')
 			[self setScanLocation:theScanLocation];
 			if (outError)
 				{
-				[theArray release];
 				NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 					@"Could not scan array. Array not terminated by a ']' character.", NSLocalizedDescriptionKey,
 					NULL];
 				*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-9 userInfo:theUserInfo];
 				}
+			[theArray release];
 			return(NO);
 			}
 		
@@ -333,12 +334,12 @@ if ([self scanCharacter:']'] == NO)
 	[self setScanLocation:theScanLocation];
 	if (outError)
 		{
-		[theArray release];
 		NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
 			@"Could not scan array. Array not terminated by a ']' character.", NSLocalizedDescriptionKey,
 			NULL];
 		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-10 userInfo:theUserInfo];
 		}
+	[theArray release];
 	return(NO);
 	}
 
@@ -368,6 +369,7 @@ if ([self scanCharacter:'"'] == NO)
 			NULL];
 		*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-11 userInfo:theUserInfo];
 		}
+	[theString release];
 	return(NO);
 	}
 
@@ -414,7 +416,6 @@ while ([self scanCharacter:'"'] == NO)
 					if (theDigit == -1)
 						{
 						[self setScanLocation:theScanLocation];
-						[theString release];
 						if (outError)
 							{
 							NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -422,6 +423,7 @@ while ([self scanCharacter:'"'] == NO)
 								NULL];
 							*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-12 userInfo:theUserInfo];
 							}
+						[theString release];
 						return(NO);
 						}
 					theCharacter |= (theDigit << theShift);
@@ -431,7 +433,6 @@ while ([self scanCharacter:'"'] == NO)
 			default:
 				{
 				[self setScanLocation:theScanLocation];
-				[theString release];
 				if (outError)
 					{
 					NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -439,6 +440,7 @@ while ([self scanCharacter:'"'] == NO)
 						NULL];
 					*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-13 userInfo:theUserInfo];
 					}
+				[theString release];
 				return(NO);
 				}
 				break;
