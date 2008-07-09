@@ -9,17 +9,13 @@
 #import "CDataScanner.h"
 
 @interface CJSONScanner : CDataScanner {
-	BOOL scanComments;
 }
-
-@property (readwrite, nonatomic, assign) BOOL scanComments;
 
 - (BOOL)scanJSONObject:(id *)outObject error:(NSError **)outError;
 - (BOOL)scanJSONDictionary:(NSDictionary **)outDictionary error:(NSError **)outError;
 - (BOOL)scanJSONArray:(NSArray **)outArray error:(NSError **)outError;
 - (BOOL)scanJSONStringConstant:(NSString **)outStringConstant error:(NSError **)outError;
 - (BOOL)scanJSONNumberConstant:(NSNumber **)outNumberConstant error:(NSError **)outError;
-- (void)skipJSONWhitespace;
 
 @end
 

@@ -11,6 +11,10 @@
 #import "NSCharacterSet_Extensions.h"
 #import "CDataScanner_Extensions.h"
 
+#if !defined(TREAT_COMMENTS_AS_WHITESPACE)
+#define TREAT_COMMENTS_AS_WHITESPACE 0
+#endif // !defined(TREAT_COMMENTS_AS_WHITESPACE)
+
 NSString *const kJSONScannerErrorDomain = @"CJSONScannerErrorDomain";
 
 inline static int HexToInt(char inCharacter)
@@ -29,8 +33,6 @@ else
 #pragma mark -
 
 @implementation CJSONScanner
-
-@synthesize scanComments;
 
 - (id)init
 {
@@ -85,7 +87,7 @@ if (theData && theData.length >= 4)
 
 - (BOOL)scanJSONObject:(id *)outObject error:(NSError **)outError
 {
-[self skipJSONWhitespace];
+[self skipWhitespace];
 
 id theObject = NULL;
 
@@ -163,7 +165,7 @@ NSMutableDictionary *theDictionary = [[NSMutableDictionary alloc] init];
 
 while ([self currentCharacter] != '}')
 	{
-	[self skipJSONWhitespace];
+	[self skipWhitespace];
 	
 	if ([self currentCharacter] == '}')
 		break;
@@ -183,7 +185,7 @@ while ([self currentCharacter] != '}')
 		return(NO);
 		}
 
-	[self skipJSONWhitespace];
+	[self skipWhitespace];
 
 	if ([self scanCharacter:':'] == NO)
 		{
@@ -216,7 +218,7 @@ while ([self currentCharacter] != '}')
 
 	[theDictionary setValue:theValue forKey:theKey];
 
-	[self skipJSONWhitespace];
+	[self skipWhitespace];
 	if ([self scanCharacter:','] == NO)
 		{
 		if ([self currentCharacter] != '}')
@@ -236,7 +238,7 @@ while ([self currentCharacter] != '}')
 		}
 	else
 		{
-		[self skipJSONWhitespace];
+		[self skipWhitespace];
 		if ([self currentCharacter] == '}')
 			break;
 		}
@@ -281,7 +283,7 @@ if ([self scanCharacter:'['] == NO)
 
 NSMutableArray *theArray = [[NSMutableArray alloc] init];
 
-[self skipJSONWhitespace];
+[self skipWhitespace];
 while ([self currentCharacter] != ']')
 	{
 	NSString *theValue = NULL;
@@ -301,10 +303,10 @@ while ([self currentCharacter] != ']')
 
 	[theArray addObject:theValue];
 	
-	[self skipJSONWhitespace];
+	[self skipWhitespace];
 	if ([self scanCharacter:','] == NO)
 		{
-		[self skipJSONWhitespace];
+		[self skipWhitespace];
 		if ([self currentCharacter] != ']')
 			{
 			[self setScanLocation:theScanLocation];
@@ -321,10 +323,10 @@ while ([self currentCharacter] != ']')
 		
 		break;
 		}
-	[self skipJSONWhitespace];
+	[self skipWhitespace];
 	}
 
-[self skipJSONWhitespace];
+[self skipWhitespace];
 
 if ([self scanCharacter:']'] == NO)
 	{
@@ -352,7 +354,7 @@ return(YES);
 {
 NSUInteger theScanLocation = [self scanLocation];
 
-[self skipJSONWhitespace]; //  TODO - i want to remove this method. But breaks unit tests.
+[self skipWhitespace]; //  TODO - i want to remove this method. But breaks unit tests.
 
 NSMutableString *theString = [[NSMutableString alloc] init];
 
@@ -475,16 +477,15 @@ else
 	}
 }
 
-- (void)skipJSONWhitespace
+#if TREAT_COMMENTS_AS_WHITESPACE
+- (void)skipWhitespace
 {
-[self skipWhitespace];
-if (scanComments)
-	{
-	[self scanCStyleComment:NULL];
-	[self scanCPlusPlusStyleComment:NULL];
-	[self skipWhitespace];
-	}
+[super skipWhitespace];
+[self scanCStyleComment:NULL];
+[self scanCPlusPlusStyleComment:NULL];
+[super skipWhitespace];
 }
+#endif // TREAT_COMMENTS_AS_WHITESPACE
 
 #pragma mark -
 
