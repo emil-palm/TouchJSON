@@ -1,9 +1,9 @@
 //
 //  CDataScanner_UnitTests.h
-//  TouchJSON
+//  TouchCode
 //
 //  Created by Jonathan Wight on 04/16/08.
-//  Copyright 2008 toxicsoftware.com. All rights reserved.
+//  Copyright 2008 Toxic Software. All rights reserved.
 //
 
 #import <SenTestingKit/SenTestingKit.h>
