@@ -15,7 +15,7 @@
 -(void)testEmptyDictionary {
 	NSString *theSource = @"{}";
 	NSData *theData = [theSource dataUsingEncoding:NSUTF32BigEndianStringEncoding];
-	id theObject = [[CJSONDeserializer deserializer] deserialize:theData error:nil];
+	NSDictionary *theObject = [[CJSONDeserializer deserializer] deserializeAsDictionary:theData error:nil];
 	NSDictionary *dictionary = [NSDictionary dictionary];
 	STAssertEqualObjects(dictionary, theObject, nil);
 }
@@ -23,7 +23,7 @@
 -(void)testSingleKeyValuePair {
 	NSString *theSource = @"{\"a\":\"b\"}";
 	NSData *theData = [theSource dataUsingEncoding:NSUTF32BigEndianStringEncoding];
-	id theObject = [[CJSONDeserializer deserializer] deserialize:theData error:nil];
+	NSDictionary *theObject = [[CJSONDeserializer deserializer] deserializeAsDictionary:theData error:nil];
 	NSDictionary *dictionary = [NSDictionary dictionaryWithObject:@"b" forKey:@"a"];
 	STAssertEqualObjects(dictionary, theObject, nil);
 }
