@@ -42,6 +42,7 @@
 		45FDB4D9094E057C00A8B4AB /* CJSONScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FDB4BB094E056800A8B4AB /* CJSONScanner.m */; };
 		45FDB4DB094E058000A8B4AB /* CDataScanner_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FDB4B5094E056800A8B4AB /* CDataScanner_Extensions.m */; };
 		45FDB4DC094E058000A8B4AB /* NSCharacterSet_Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 45FDB4B3094E056800A8B4AB /* NSCharacterSet_Extensions.m */; };
+		DEDF6D770E4A4000005D2575 /* CJSONDeserializer_UnitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DEDF6D750E4A3F64005D2575 /* CJSONDeserializer_UnitTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +89,8 @@
 		45FDB4BB094E056800A8B4AB /* CJSONScanner.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CJSONScanner.m; sourceTree = "<group>"; };
 		45FDB4BE094E056800A8B4AB /* CJSONSerializer.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = CJSONSerializer.h; sourceTree = "<group>"; };
 		45FDB4BF094E056800A8B4AB /* CJSONSerializer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer.m; sourceTree = "<group>"; };
+		DEDF6D740E4A3F64005D2575 /* CJSONDeserializer_UnitTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJSONDeserializer_UnitTests.h; sourceTree = "<group>"; };
+		DEDF6D750E4A3F64005D2575 /* CJSONDeserializer_UnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONDeserializer_UnitTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +153,8 @@
 				453111820A64ECFA00A970C2 /* Blake.json */,
 				45DFEABA0DB6F289009267D5 /* CDataScanner_UnitTests.h */,
 				45DFEABB0DB6F289009267D5 /* CDataScanner_UnitTests.m */,
+				DEDF6D740E4A3F64005D2575 /* CJSONDeserializer_UnitTests.h */,
+				DEDF6D750E4A3F64005D2575 /* CJSONDeserializer_UnitTests.m */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				45DFEABD0DB6F289009267D5 /* CDataScanner_UnitTests.m in Sources */,
 				45DFEBDF0DB7080D009267D5 /* CJSONSerializer_UnitTests.m in Sources */,
 				45DFEBE00DB7080E009267D5 /* CJSONScanner_UnitTests.m in Sources */,
+				DEDF6D770E4A4000005D2575 /* CJSONDeserializer_UnitTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
