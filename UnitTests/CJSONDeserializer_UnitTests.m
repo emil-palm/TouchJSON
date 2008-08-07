@@ -27,4 +27,12 @@
 	NSDictionary *dictionary = [NSDictionary dictionaryWithObject:@"b" forKey:@"a"];
 	STAssertEqualObjects(dictionary, theObject, nil);
 }
+
+-(void)testDeserializeDictionaryWithNonDictionary {
+	NSString *emptyArrayInJSON = @"[]";
+	NSData *emptyArrayInJSONAsData = [emptyArrayInJSON dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSDictionary *deserializedDictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:emptyArrayInJSONAsData error:nil];
+	STAssertNil(deserializedDictionary, nil);
+}
+
 @end
