@@ -35,4 +35,15 @@
 	STAssertNil(deserializedDictionary, nil);
 }
 
+-(void)testDeserializeDictionaryWithAnEmbeddedArray {
+	NSString *theSource = @"{\"version\":\"1.0\", \"method\":\"a_method\", \"params\":[ \"a_param\" ]}";
+	NSData *theData = [theSource dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSDictionary *theObject = [[CJSONDeserializer deserializer] deserializeAsDictionary:theData error:nil];
+	NSDictionary *dictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+								@"1.0", @"version",
+								@"a_method", @"method",
+								[NSArray arrayWithObject:@"a_param"], @"params",
+								nil];
+	STAssertEqualObjects(dictionary, theObject, nil);	
+}
 @end
