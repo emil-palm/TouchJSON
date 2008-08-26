@@ -46,4 +46,23 @@
 								nil];
 	STAssertEqualObjects(dictionary, theObject, nil);	
 }
+
+-(void)testCheckForError {
+	NSString *jsonString = @"!";
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSError *error = nil;
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:jsonData error:&error];
+	STAssertNotNil(error, @"An error should be reported when deserializing a badly formed JSON string", nil);
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testNoError {
+	NSString *jsonString = @"{}";
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSError *error = nil;
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:jsonData error:&error];
+	STAssertNil(error, @"No error should be reported when deserializing an empty dictionary", nil);
+	STAssertNotNil(dictionary, @"Dictionary will be nil when there is not an error deserializing", nil);
+}
+
 @end
