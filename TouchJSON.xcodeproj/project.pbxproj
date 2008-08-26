@@ -91,6 +91,7 @@
 		45FDB4BF094E056800A8B4AB /* CJSONSerializer.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializer.m; sourceTree = "<group>"; };
 		DEDF6D740E4A3F64005D2575 /* CJSONDeserializer_UnitTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJSONDeserializer_UnitTests.h; sourceTree = "<group>"; };
 		DEDF6D750E4A3F64005D2575 /* CJSONDeserializer_UnitTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONDeserializer_UnitTests.m; sourceTree = "<group>"; };
+		DEFE02A50E64969300730978 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +126,7 @@
 		29B97314FDCFA39411CA2CEA /* Sample */ = {
 			isa = PBXGroup;
 			children = (
+				DEFE02A50E64969300730978 /* README.txt */,
 				45FC53AB08FBFB490091ABDF /* Source */,
 				453111AD0A64EDAA00A970C2 /* Demo */,
 				4505886B099952F600FB865F /* UnitTests */,
