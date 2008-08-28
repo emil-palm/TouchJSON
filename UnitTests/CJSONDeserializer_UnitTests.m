@@ -56,6 +56,34 @@
 	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
 }
 
+-(void)testCheckForErrorWithEmptyJSON {
+	NSString *jsonString = @"";
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSError *error = nil;
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:jsonData error:&error];
+	STAssertNotNil(error, @"An error should be reported when deserializing a badly formed JSON string", nil);
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testCheckForErrorWithEmptyJSONAndIgnoringError {
+	NSString *jsonString = @"";
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:jsonData error:nil];
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testCheckForErrorWithNilJSON {
+	NSError *error = nil;
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:nil error:&error];
+	STAssertNotNil(error, @"An error should be reported when deserializing a badly formed JSON string", nil);
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testCheckForErrorWithNilJSONAndIgnoringError {
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserializeAsDictionary:nil error:nil];
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
 -(void)testNoError {
 	NSString *jsonString = @"{}";
 	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];

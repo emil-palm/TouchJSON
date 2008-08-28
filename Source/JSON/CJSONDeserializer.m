@@ -11,7 +11,7 @@
 #import "CJSONScanner.h"
 #import "CDataScanner.h"
 
-NSString *const kJSONDeserializerErrorDomain /* = @"CJSONDeserializerErrorDomain" */;
+NSString *const kJSONDeserializerErrorDomain  = @"CJSONDeserializerErrorDomain";
 
 @implementation CJSONDeserializer
 
@@ -24,7 +24,7 @@ return([[[self alloc] init] autorelease]);
 {
 if (inData == NULL || [inData length] == 0)
 	{
-	if (*outError)
+	if (outError)
 		*outError = [NSError errorWithDomain:kJSONDeserializerErrorDomain code:-1 userInfo:NULL];
 
 	return(NULL);
