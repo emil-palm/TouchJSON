@@ -93,4 +93,43 @@
 	STAssertNotNil(dictionary, @"Dictionary will be nil when there is not an error deserializing", nil);
 }
 
+#pragma mark DeprecatedTests
+-(void)testCheckForError_Deprecated {
+	NSString *jsonString = @"{!";
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSError *error = nil;
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserialize:jsonData error:&error];
+	STAssertNotNil(error, @"An error should be reported when deserializing a badly formed JSON string", nil);
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testCheckForErrorWithEmptyJSON_Deprecated {
+	NSString *jsonString = @"";
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSError *error = nil;
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserialize:jsonData error:&error];
+	STAssertNotNil(error, @"An error should be reported when deserializing a badly formed JSON string", nil);
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testCheckForErrorWithEmptyJSONAndIgnoringError_Deprecated {
+	NSString *jsonString = @"";
+	NSData *jsonData = [jsonString dataUsingEncoding:NSUTF32BigEndianStringEncoding];
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserialize:jsonData error:nil];
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testCheckForErrorWithNilJSON_Deprecated {
+	NSError *error = nil;
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserialize:nil error:&error];
+	STAssertNotNil(error, @"An error should be reported when deserializing a badly formed JSON string", nil);
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
+-(void)testCheckForErrorWithNilJSONAndIgnoringError_Deprecated {
+	NSDictionary *dictionary = [[CJSONDeserializer deserializer] deserialize:nil error:nil];
+	STAssertNil(dictionary, @"Dictionary will be nil when there is an error deserializing", nil);
+}
+
 @end
+
