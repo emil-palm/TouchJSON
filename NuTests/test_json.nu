@@ -1,5 +1,17 @@
 (load "TouchJSON")
 
+(class CJSONDeserializer
+     (- deserialize:object is
+	(if (object isKindOfClass:NSString)
+	    (set object (object dataUsingEncoding:NSUTF8StringEncoding)))
+	(set errorp (NuReference new))
+        (set result (self deserialize:object error:errorp))
+        (if (errorp value)
+            (then (puts (+ "error: " ((errorp value) description)))
+                  nil)
+            (else result))))
+
+
 (class TestJSON is NuTestCase
      
      (- testSerializer is
@@ -12,7 +24,7 @@
              (s serializeDictionary:(dict three:(array 1 2 3))))
         
         ;; It seemed to me that an orthgonal API would let me do this...
-        ;;(assert_equal "null" (s serializeObject:nil))
+        ;; (assert_equal "null" (s serializeObject:nil))
         (assert_equal "123" (s serializeObject:123))
         (assert_equal "\"one two three\"" (s serializeObject:"one two three"))
         (assert_equal "[1,\"two\",3]" (s serializeObject:(array 1 "two" 3.0)))

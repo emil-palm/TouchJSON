@@ -17,13 +17,14 @@
 ;; source files
 (set @m_files     (filelist "^Source/Extensions/.*.m$"))
 (@m_files 		  unionSet:(filelist "^Source/JSON/.*.m$"))
+(@m_files 		  unionSet:(filelist "^Source/.*.m$"))
 
 ;; framework description
 (set @framework "TouchJSON")
 (set @framework_identifier   "com.toxicsoftware.touchjson")
 (set @framework_creator_code "????")
 
-(set @cflags "-g -I Source/Extensions -I Source/JSON")
+(set @cflags "-g -I Source -I Source/Extensions -I Source/JSON")
 (set @ldflags "-framework Cocoa")
 
 (compilation-tasks)
