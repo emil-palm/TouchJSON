@@ -309,4 +309,16 @@ BOOL theResult = Scan(theSource, &theObject);
 STAssertTrue(theResult, @"Scan return failure.");
 }
 
+#pragma mark -
+
+- (void)testScottyCode1
+{
+// This should fail.
+id theObject = NULL;
+NSString *theSource = @"{\"a\": [ { ] }";
+BOOL theResult = Scan(theSource, &theObject);
+STAssertFalse(theResult, @"Scan return failure.");
+STAssertTrue(theObject == NULL, @"Scan return failure.");
+}
+
 @end

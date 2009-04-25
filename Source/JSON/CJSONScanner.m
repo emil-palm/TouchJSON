@@ -108,6 +108,8 @@ if (theData && theData.length >= 4)
 
 - (BOOL)scanJSONObject:(id *)outObject error:(NSError **)outError
 {
+BOOL theResult = YES;
+
 [self skipWhitespace];
 
 id theObject = NULL;
@@ -135,7 +137,7 @@ switch (C)
 		break;
 	case '\"':
 	case '\'':
-		[self scanJSONStringConstant:&theObject error:outError];
+		theResult = [self scanJSONStringConstant:&theObject error:outError];
 		break;
 	case '0':
 	case '1':
@@ -148,13 +150,13 @@ switch (C)
 	case '8':
 	case '9':
 	case '-':
-		[self scanJSONNumberConstant:&theObject error:outError];
+		theResult = [self scanJSONNumberConstant:&theObject error:outError];
 		break;
 	case '{':
-		[self scanJSONDictionary:&theObject error:outError];
+		theResult = [self scanJSONDictionary:&theObject error:outError];
 		break;
 	case '[':
-		[self scanJSONArray:&theObject error:outError];
+		theResult = [self scanJSONArray:&theObject error:outError];
 		break;
 	default:
 		
@@ -163,7 +165,8 @@ switch (C)
 
 if (outObject != NULL)
 	*outObject = theObject;
-return(YES);
+
+return(theResult);
 }
 
 - (BOOL)scanJSONDictionary:(NSDictionary **)outDictionary error:(NSError **)outError
