@@ -45,4 +45,14 @@
 	id theObject = [[CJSONSerializer serializer] serializeObject:dictionary];
 	STAssertEqualObjects(jsonEquivalent, theObject, nil);
 }
+
+/* http://code.google.com/p/touchcode/issues/detail?id=52 */
+-(void)test_SerializeArrayWithDuplicatedInstances {
+    NSString *a = @"a";
+    NSArray  *input = [NSArray arrayWithObjects:a, @"b", a, nil];
+    NSString *expected = @"[\"a\",\"b\",\"a\"]";
+    id output = [[CJSONSerializer serializer] serializeObject:input];
+    STAssertEqualObjects(expected, output, nil);
+}
+
 @end

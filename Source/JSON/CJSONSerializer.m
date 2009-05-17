@@ -154,10 +154,11 @@ NSMutableString *theString = [NSMutableString string];
 
 NSEnumerator *theEnumerator = [inArray objectEnumerator];
 id theValue = NULL;
+NSUInteger i = 0;
 while ((theValue = [theEnumerator nextObject]) != NULL)
 	{
 	[theString appendString:[self serializeObject:theValue]];
-	if (theValue != [inArray lastObject])
+	if (++i < [inArray count])
 		[theString appendString:@","];
 	}
 return([NSString stringWithFormat:@"[%@]", theString]);
