@@ -45,15 +45,8 @@ extern NSString *const kJSONDeserializerErrorDomain /* = @"CJSONDeserializerErro
 
 + (id)deserializer;
 
-- (id)deserializeAsDictionary:(NSData *)inData error:(NSError **)outError;
-
-@end
-
-#pragma mark -
-
-@interface CJSONDeserializer (CJSONDeserializer_Deprecated)
-
-/// You should switch to using deserializeAsDictionary:error: instead.
 - (id)deserialize:(NSData *)inData error:(NSError **)outError;
+
+- (id)deserializeAsDictionary:(NSData *)inData error:(NSError **)outError;
 
 @end
