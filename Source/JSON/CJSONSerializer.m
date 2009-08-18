@@ -96,18 +96,22 @@ switch (CFNumberGetType((CFNumberRef)inNumber))
 			theResult = [inNumber stringValue];
 		}
 		break;
+	case kCFNumberFloat32Type:
+	case kCFNumberFloat64Type:
+	case kCFNumberFloatType:
+	case kCFNumberDoubleType:
+		{
+		theResult = [NSString stringWithFormat:@"%f", [inNumber doubleValue]];
+		}
+		break;
 	case kCFNumberSInt8Type:
 	case kCFNumberSInt16Type:
 	case kCFNumberSInt32Type:
 	case kCFNumberSInt64Type:
-	case kCFNumberFloat32Type:
-	case kCFNumberFloat64Type:
 	case kCFNumberShortType:
 	case kCFNumberIntType:
 	case kCFNumberLongType:
 	case kCFNumberLongLongType:
-	case kCFNumberFloatType:
-	case kCFNumberDoubleType:
 	case kCFNumberCFIndexType:
 	default:
 		theResult = [inNumber stringValue];
