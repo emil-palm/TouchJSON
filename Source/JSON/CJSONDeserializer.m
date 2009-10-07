@@ -75,4 +75,21 @@ else
 	return(NULL);
 }
 
+- (id)deserializeAsArray:(NSData *)inData error:(NSError **)outError;
+{
+if (inData == NULL || [inData length] == 0)
+	{
+	if (outError)
+		*outError = [NSError errorWithDomain:kJSONDeserializerErrorDomain code:-1 userInfo:NULL];
+
+	return(NULL);
+	}
+CJSONScanner *theScanner = [CJSONScanner scannerWithData:inData];
+NSArray *theArray = NULL;
+if ([theScanner scanJSONArray:&theArray error:outError] == YES)
+	return(theArray);
+else
+	return(NULL);
+}
+
 @end

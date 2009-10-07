@@ -48,5 +48,6 @@ extern NSString *const kJSONDeserializerErrorDomain /* = @"CJSONDeserializerErro
 - (id)deserialize:(NSData *)inData error:(NSError **)outError;
 
 - (id)deserializeAsDictionary:(NSData *)inData error:(NSError **)outError;
+- (id)deserializeAsArray:(NSData *)inData error:(NSError **)outError;
 
 @end
