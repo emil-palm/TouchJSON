@@ -34,6 +34,7 @@
 
 + (id)serializer;
 
+/// Take any JSON compatible object (generally NSNull, NSNumber, NSString, NSArray and NSDictionary) and produce a JSON string.
 - (NSString *)serializeObject:(id)inObject;
 
 - (NSString *)serializeNull:(NSNull *)inNull;

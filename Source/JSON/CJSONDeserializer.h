@@ -31,15 +31,7 @@
 
 extern NSString *const kJSONDeserializerErrorDomain /* = @"CJSONDeserializerErrorDomain" */;
 
-@protocol CDeserializerProtocol <NSObject>
-
-- (id)deserializeAsDictionary:(NSData *)inData error:(NSError **)outError;
-
-@end
-
-#pragma mark -
-
-@interface CJSONDeserializer : NSObject <CDeserializerProtocol> {
+@interface CJSONDeserializer : NSObject {
 
 }
 

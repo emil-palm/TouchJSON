@@ -29,6 +29,7 @@
 
 #import "CDataScanner.h"
 
+/// CDataScanner subclass that understands JSON syntax natively. You should generally use CJSONDeserializer instead of this class. (TODO - this could have been a category?)
 @interface CJSONScanner : CDataScanner {
 }
 
