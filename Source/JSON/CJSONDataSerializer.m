@@ -31,7 +31,28 @@
 
 #import "CSerializedJSONData.h"
 
+static NSData *kNULL = NULL;
+static NSData *kFalse = NULL;
+static NSData *kTrue = NULL;
+
 @implementation CJSONDataSerializer
+
++ (void)initialize
+{
+NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
+
+@synchronized(@"CJSONDataSerializer")
+	{
+	if (kNULL == NULL)
+		kNULL = [[NSData alloc] initWithBytesNoCopy:"null" length:4 freeWhenDone:NO];
+	if (kFalse == NULL)
+		kFalse = [[NSData alloc] initWithBytesNoCopy:"false" length:4 freeWhenDone:NO];
+	if (kTrue == NULL)
+		kTrue = [[NSData alloc] initWithBytesNoCopy:"true" length:4 freeWhenDone:NO];
+	}
+
+[thePool release];
+}
 
 + (id)serializer
 {
@@ -83,7 +104,7 @@ return(theResult);
 - (NSData *)serializeNull:(NSNull *)inNull
 {
 #pragma unused (inNull)
-return([@"null" dataUsingEncoding:NSASCIIStringEncoding]);
+return(kNULL);
 }
 
 - (NSData *)serializeNumber:(NSNumber *)inNumber
@@ -95,9 +116,9 @@ switch (CFNumberGetType((CFNumberRef)inNumber))
 		{
 		int theValue = [inNumber intValue];
 		if (theValue == 0)
-			theResult = [@"false" dataUsingEncoding:NSASCIIStringEncoding];
+			theResult = kFalse;
 		else if (theValue == 1)
-			theResult = [@"true" dataUsingEncoding:NSASCIIStringEncoding];
+			theResult = kTrue;
 		else
 			theResult = [[inNumber stringValue] dataUsingEncoding:NSASCIIStringEncoding];
 		}
@@ -162,7 +183,7 @@ return([[NSString stringWithFormat:@"\"%@\"", theMutableCopy] dataUsingEncoding:
 {
 NSMutableData *theData = [NSMutableData data];
 
-[theData appendData:[@"[" dataUsingEncoding:NSASCIIStringEncoding]];
+[theData appendBytes:"[" length:1];
 
 NSEnumerator *theEnumerator = [inArray objectEnumerator];
 id theValue = NULL;
@@ -171,10 +192,10 @@ while ((theValue = [theEnumerator nextObject]) != NULL)
 	{
 	[theData appendData:[self serializeObject:theValue]];
 	if (++i < [inArray count])
-		[theData appendData:[@"," dataUsingEncoding:NSASCIIStringEncoding]];
+		[theData appendBytes:"," length:1];
 	}
 
-[theData appendData:[@"[" dataUsingEncoding:NSASCIIStringEncoding]];
+[theData appendBytes:"]" length:1];
 
 return(theData);
 }
@@ -183,7 +204,7 @@ return(theData);
 {
 NSMutableData *theData = [NSMutableData data];
 
-[theData appendData:[@"{" dataUsingEncoding:NSASCIIStringEncoding]];
+[theData appendBytes:"{" length:1];
 
 NSArray *theKeys = [inDictionary allKeys];
 NSEnumerator *theEnumerator = [theKeys objectEnumerator];
@@ -193,14 +214,14 @@ while ((theKey = [theEnumerator nextObject]) != NULL)
 	id theValue = [inDictionary objectForKey:theKey];
 	
 	[theData appendData:[self serializeString:theKey]];
-	[theData appendData:[@":" dataUsingEncoding:NSASCIIStringEncoding]];
+	[theData appendBytes:":" length:1];
 	[theData appendData:[self serializeObject:theValue]];
 	
 	if (theKey != [theKeys lastObject])
 		[theData appendData:[@"," dataUsingEncoding:NSASCIIStringEncoding]];
 	}
 
-[theData appendData:[@"}" dataUsingEncoding:NSASCIIStringEncoding]];
+[theData appendBytes:"}" length:1];
 
 return(theData);
 }
