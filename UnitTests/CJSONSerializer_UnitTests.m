@@ -55,4 +55,18 @@
     STAssertEqualObjects(expected, output, nil);
 }
 
+- (void)testFalse {
+	NSString *jsonEquivalent = @"{\"a\":false}";
+	NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:NO] forKey:@"a"];
+	id theObject = [[CJSONSerializer serializer] serializeObject:dictionary];
+	STAssertEqualObjects(jsonEquivalent, theObject, nil);
+}
+
+- (void)testDoubleAccuracy {
+	NSString *jsonEquivalent = @"{\"a\":1.23456789}";
+	NSDictionary *dictionary = [NSDictionary dictionaryWithObject:[NSNumber numberWithDouble:1.23456789] forKey:@"a"];
+	id theObject = [[CJSONSerializer serializer] serializeObject:dictionary];
+	STAssertEqualObjects(jsonEquivalent, theObject, nil);
+}
+
 @end

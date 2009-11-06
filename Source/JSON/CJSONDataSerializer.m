@@ -46,7 +46,7 @@ NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
 	if (kNULL == NULL)
 		kNULL = [[NSData alloc] initWithBytesNoCopy:"null" length:4 freeWhenDone:NO];
 	if (kFalse == NULL)
-		kFalse = [[NSData alloc] initWithBytesNoCopy:"false" length:4 freeWhenDone:NO];
+		kFalse = [[NSData alloc] initWithBytesNoCopy:"false" length:5 freeWhenDone:NO];
 	if (kTrue == NULL)
 		kTrue = [[NSData alloc] initWithBytesNoCopy:"true" length:4 freeWhenDone:NO];
 	}
@@ -127,10 +127,6 @@ switch (CFNumberGetType((CFNumberRef)inNumber))
 	case kCFNumberFloat64Type:
 	case kCFNumberFloatType:
 	case kCFNumberDoubleType:
-		{
-		theResult = [[NSString stringWithFormat:@"%f", [inNumber doubleValue]] dataUsingEncoding:NSASCIIStringEncoding];
-		}
-		break;
 	case kCFNumberSInt8Type:
 	case kCFNumberSInt16Type:
 	case kCFNumberSInt32Type:
