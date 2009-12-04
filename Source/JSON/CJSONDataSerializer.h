@@ -1,5 +1,5 @@
 //
-//  CJSONDataSerializer.h
+//  CJSONSerializer.h
 //  TouchCode
 //
 //  Created by Jonathan Wight on 12/07/2005.
