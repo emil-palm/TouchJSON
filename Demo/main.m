@@ -2,7 +2,7 @@
 //  main.m
 //  TouchCode
 //
-//  Created by  on 20090528.
+//  Created by Jonathan Wight on 20090528.
 //  Copyright 2009 toxicsoftware.com. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person
