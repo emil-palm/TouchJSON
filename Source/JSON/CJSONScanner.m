@@ -55,10 +55,13 @@ else
 
 @implementation CJSONScanner
 
+@synthesize strictEscapeCodes;
+
 - (id)init
 {
 if ((self = [super init]) != nil)
 	{
+	strictEscapeCodes = NO;
 	}
 return(self);
 }
@@ -456,16 +459,19 @@ while ([self scanCharacter:'"'] == NO)
 				break;
 			default:
 				{
-				[self setScanLocation:theScanLocation];
-				if (outError)
+				if (strictEscapeCodes == YES)
 					{
-					NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-						@"Could not scan string constant. Unknown escape code.", NSLocalizedDescriptionKey,
-						NULL];
-					*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-13 userInfo:theUserInfo];
+					[self setScanLocation:theScanLocation];
+					if (outError)
+						{
+						NSDictionary *theUserInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+							@"Could not scan string constant. Unknown escape code.", NSLocalizedDescriptionKey,
+							NULL];
+						*outError = [NSError errorWithDomain:kJSONScannerErrorDomain code:-13 userInfo:theUserInfo];
+						}
+					[theString release];
+					return(NO);
 					}
-				[theString release];
-				return(NO);
 				}
 				break;
 			}
