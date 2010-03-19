@@ -264,7 +264,7 @@ id theObject = NULL;
 - (void)testBlakesCode
 {
 id theObject = NULL;
-BOOL theResult = Scan([NSString stringWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"Blake" ofType:@"json"]], &theObject, NULL);
+BOOL theResult = Scan([NSString stringWithContentsOfFile:[[NSBundle bundleForClass:[self class]] pathForResource:@"Blake" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil], &theObject, NULL);
 STAssertTrue(theResult, @"Scan returned failure");
 }
 
